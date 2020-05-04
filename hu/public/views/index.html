@@ -21,7 +21,7 @@
 
 <script>
     async function apiGetAll() {
-      const resp = await fetch('http://localhost:3000/a');
+      const resp = await fetch('/a');
       const data = await resp.json();
       return data;
     }
@@ -75,7 +75,7 @@
   }
   gog();
    async function apiGetAll2() {
-      const resp = await fetch('http://localhost:3000/b')
+      const resp = await fetch('/b')
       const data = await resp.json()
       return data
     }
