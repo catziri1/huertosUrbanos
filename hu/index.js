@@ -71,5 +71,5 @@ app.get('/bitacoras', function (req, res) {
   //res.end('hola mundo');
   res.sendFile(__dirname + '/public/views/bitacoras.html');
 });
-app.listen(3000);
+app.listen(80);
 
