@@ -38,7 +38,7 @@ app.get('/a', function (req, res) {
   };
 
   processData(function (err, queryresults) {
-    //console.log(queryresults);
+    console.log("teme"+queryresults);
     res.json(queryresults);
   });
 

@@ -47,9 +47,10 @@
         }
       }
        data.addRows(observable);
-   //  data.addRows([
+       console.log(observable);
+   // data.addRows([
      //   ["01:15", 12], ["01:30", 25], ["01:45", 0], ["02:00", 20], ["02:15", 24]
-      //]);
+     // ]);
 
       var options = {
         title: 'Temperatura',
@@ -60,8 +61,8 @@
           title: 'Temperatura (°C)',
           gridlines: { count: 10 },
           viewWindow: {
-            min: 10,
-            max: 20
+            min: 1,
+            max: 4
           }
         }
       };
@@ -79,9 +80,9 @@
       return data
     }
   async function gogLuminosidad(){
-    var observable=[];
-    observable=await apiGetAll2();
-    console.log(observable);
+    var observable2=[];
+    observable2=await apiGetAll2();
+    console.log(observable2);
     google.charts.load('current', { packages: ['corechart', 'line'] });
     google.charts.setOnLoadCallback(drawBackgroundColor);
     function drawBackgroundColor() {
@@ -90,7 +91,7 @@
       var data = new google.visualization.DataTable();
       data.addColumn('string', 'X');
       data.addColumn('number');
-      observable.sort(sortFunction);
+      observable2.sort(sortFunction);
       function sortFunction(a, b) {
         if (a[0] === b[0]) {
           return 0;
@@ -99,7 +100,7 @@
           return (a[0] < b[0]) ? -1 : 1;
         }
       }
-       data.addRows(observable);
+       data.addRows(observable2);
    //  data.addRows([
      //   ["01:15", 12], ["01:30", 25], ["01:45", 0], ["02:00", 20], ["02:15", 24]
       //]);
@@ -113,8 +114,8 @@
           title: 'Luz (Lux)',
           gridlines: { count: 10 },
           viewWindow: {
-            min: 10,
-            max: 20
+            min: 0,
+            max: 400
           }
         }
       };
