@@ -19,118 +19,189 @@
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-<script>
+  <script>
     async function apiGetAll() {
       const resp = await fetch('/a');
       const data = await resp.json();
       return data;
     }
-    async function gog(){
-    var observable=[];
-    observable=await apiGetAll();
-    console.log(observable);
-    google.charts.load('current', { packages: ['corechart', 'line'] });
-    google.charts.setOnLoadCallback(drawBackgroundColor);
-    function drawBackgroundColor() {
-      var dateC = new Date();
-      var t = dateC.getDate() + " " + dateC.getMonth() + " " + dateC.getFullYear() + " (Time hrs)";
-      var data = new google.visualization.DataTable();
-      data.addColumn('string', 'X');
-      data.addColumn('number');
-      observable.sort(sortFunction);
-      function sortFunction(a, b) {
-        if (a[0] === b[0]) {
-          return 0;
-        }
-        else {
-          return (a[0] < b[0]) ? -1 : 1;
-        }
-      }
-       data.addRows(observable);
-       console.log(observable);
-   // data.addRows([
-     //   ["01:15", 12], ["01:30", 25], ["01:45", 0], ["02:00", 20], ["02:15", 24]
-     // ]);
-
-      var options = {
-        title: 'Temperatura',
-        hAxis: {
-          title: "Tiempo"
-        },
-        vAxis: {
-          title: 'Temperatura (°C)',
-          gridlines: { count: 10 },
-          viewWindow: {
-            min: 1,
-            max: 4
+    async function gog() {
+      var observable = [];
+      observable = await apiGetAll();
+      console.log(observable);
+      google.charts.load('current', { packages: ['corechart', 'line'] });
+      google.charts.setOnLoadCallback(drawBackgroundColor);
+      function drawBackgroundColor() {
+        var dateC = new Date();
+        var t = dateC.getDate() + " " + dateC.getMonth() + " " + dateC.getFullYear() + " (Time hrs)";
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'X');
+        data.addColumn('number');
+        observable.sort(sortFunction);
+        function sortFunction(a, b) {
+          if (a[0] === b[0]) {
+            return 0;
+          }
+          else {
+            return (a[0] < b[0]) ? -1 : 1;
           }
         }
-      };
+        data.addRows(observable);
+        console.log(observable);
+        // data.addRows([
+        //   ["01:15", 12], ["01:30", 25], ["01:45", 0], ["02:00", 20], ["02:15", 24]
+        // ]);
+
+        var options = {
+          title: 'Temperatura'
+          ,
+          titleTextStyle: {
+            fontSize: 16, // 12, 18 whatever you want (don't specify px)
+          },
+          hAxis: {
+            title: "Tiempo",
+            textStyle: {
+              fontSize: 10 // or the number you want
+            }
+          },
+          vAxis: {
+            title: 'Temperatura (°C)',
+            gridlines: { count: 5 },
+            viewWindow: {
+              min: 1,
+              max: 4
+            }
+          }
+        };
 
 
-      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
-     
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+
+      }
     }
-  }
-  gog();
-   async function apiGetAll2() {
+    gog();
+    async function apiGetAll2() {
       const resp = await fetch('/b')
       const data = await resp.json()
       return data
     }
-  async function gogLuminosidad(){
-    var observable2=[];
-    observable2=await apiGetAll2();
-    console.log(observable2);
-    google.charts.load('current', { packages: ['corechart', 'line'] });
-    google.charts.setOnLoadCallback(drawBackgroundColor);
-    function drawBackgroundColor() {
-      var dateC = new Date();
-      var t = dateC.getDate() + " " + dateC.getMonth() + " " + dateC.getFullYear() + " (Time hrs)";
-      var data = new google.visualization.DataTable();
-      data.addColumn('string', 'X');
-      data.addColumn('number');
-      observable2.sort(sortFunction);
-      function sortFunction(a, b) {
-        if (a[0] === b[0]) {
-          return 0;
-        }
-        else {
-          return (a[0] < b[0]) ? -1 : 1;
-        }
-      }
-       data.addRows(observable2);
-   //  data.addRows([
-     //   ["01:15", 12], ["01:30", 25], ["01:45", 0], ["02:00", 20], ["02:15", 24]
-      //]);
-
-      var options = {
-        title: 'Luminosidad',
-        hAxis: {
-          title: "Tiempo"
-        },
-        vAxis: {
-          title: 'Luz (Lux)',
-          gridlines: { count: 10 },
-          viewWindow: {
-            min: 0,
-            max: 400
+    async function gogLuminosidad() {
+      var observable2 = [];
+      observable2 = await apiGetAll2();
+      console.log(observable2);
+      google.charts.load('current', { packages: ['corechart', 'line'] });
+      google.charts.setOnLoadCallback(drawBackgroundColor);
+      function drawBackgroundColor() {
+        var dateC = new Date();
+        var t = dateC.getDate() + " " + dateC.getMonth() + " " + dateC.getFullYear() + " (Time hrs)";
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'X');
+        data.addColumn('number');
+        observable2.sort(sortFunction);
+        function sortFunction(a, b) {
+          if (a[0] === b[0]) {
+            return 0;
+          }
+          else {
+            return (a[0] < b[0]) ? -1 : 1;
           }
         }
-      };
+        data.addRows(observable2);
+        //  data.addRows([
+        //   ["01:15", 12], ["01:30", 25], ["01:45", 0], ["02:00", 20], ["02:15", 24]
+        //]);
+
+        var options = {
+          title: 'Luminosidad',
+          titleTextStyle: {
+            fontSize: 16, // 12, 18 whatever you want (don't specify px)
+          },
+          hAxis: {
+            title: "Tiempo",
+            textStyle: {
+              fontSize: 10 // or the number you want
+            }
+          },
+          vAxis: {
+            title: 'Luz (Lux)',
+            gridlines: { count: 5 },
+            viewWindow: {
+              min: 0,
+              max: 400
+            }
+          }
+        };
 
 
-      var chart = new google.visualization.LineChart(document.getElementById('chart_div2'));
-      chart.draw(data, options);
-     
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div2'));
+        chart.draw(data, options);
+
+      }
     }
-  }
- 
+    gogLuminosidad();
+    async function apiGetAll3() {
+      const resp = await fetch('/c');
+      const data = await resp.json();
+      return data;
+    }
+    async function gogHumedad() {
+      var observable = [];
+      observable = await apiGetAll3();
+      console.log(observable);
+      google.charts.load('current', { packages: ['corechart', 'line'] });
+      google.charts.setOnLoadCallback(drawBackgroundColor);
+      function drawBackgroundColor() {
+        var dateC = new Date();
+        var t = dateC.getDate() + " " + dateC.getMonth() + " " + dateC.getFullYear() + " (Time hrs)";
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'X');
+        data.addColumn('number');
+        observable.sort(sortFunction);
+        function sortFunction(a, b) {
+          if (a[0] === b[0]) {
+            return 0;
+          }
+          else {
+            return (a[0] < b[0]) ? -1 : 1;
+          }
+        }
+        data.addRows(observable);
+        console.log(observable);
+        // data.addRows([
+        //   ["01:15", 12], ["01:30", 25], ["01:45", 0], ["02:00", 20], ["02:15", 24]
+        // ]);
 
-  gogLuminosidad(); 
+        var options = {
+          title: 'Humedad',
+          titleTextStyle: {
+            fontSize: 16, // 12, 18 whatever you want (don't specify px)
+          },
+          hAxis: {
+            title: "Tiempo",
+            textStyle: {
+              fontSize: 10 // or the number you want
+            }
+          },
+          vAxis: {
+            title: 'Humedad (°C)',
+            gridlines: { count: 5 },
+            viewWindow: {
+              min: 1,
+              max: 4
+            }
+          }
+        };
+
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div3'));
+        chart.draw(data, options);
+
+      }
+    }
+    gogHumedad();
   </script>
-  
+
 </head>
 
 <body>
@@ -146,25 +217,22 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item active">
-          <a class="nav-link" href="/">Inicio <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="/home">Inicio <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/bitacoras">Bitácoras</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/calendario">Calendario</a>
+          <a class="nav-link" href="/logout">Logout</a>
         </li>
       </ul>
     </div>
   </nav>
 
   <!--Div that will hold the pie chart-->
-  <div float="left">
-    <div style=" float:left;margin:0; width: 50%; height: 500px" id="chart_div"> </div>
-
-     <div style="float:left;margin:0; width: 50%; height: 500px" id="chart_div2"> </div>
- 
-  </div>
+  <div style="float:left;margin:0; width: 33.3333%; height: 500px;" id="chart_div"> </div>
+  <div style="float:left;margin:0; width: 33.3333%; height: 500px;" id="chart_div2"> </div>
+  <div style="float:left;margin:0; width: 33.3333%; height: 500px;" id="chart_div3"> </div>
 </body>
 
 </html>

@@ -3,27 +3,124 @@ let app = express();
 app.set('view engine', 'ejs');
 path = require('path');
 var async = require('async');
-app.use('/public', express.static(__dirname + '/public'));
+ app.use('/public', express.static(__dirname + '/public'));
 var Observable = require('rxjs');
 var dynamo = require('./dynamo.js');
 var temp = new dynamo('Temperatura');
 var luz = new dynamo('Luz');
-
-temp.init(
-  function () {
-    console.log("temp Storage Starter");
-  }
-)
-
-luz.init(
-  function () {
-    console.log("temp Storage Starter");
-  }
-)
+var humedad = new dynamo('Humedad');
 
 
-app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/public/views/index.html');
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+const crypto = require('crypto');
+
+
+const generateAuthToken = () => {
+  return crypto.randomBytes(30).toString('hex');
+}
+
+const authTokens = {};
+
+app.use((req, res, next) => {
+  // Get auth token from the cookies
+  const authToken = req.cookies['AuthToken'];
+
+  // Inject the user to the request
+  req.user = authTokens[authToken];
+
+  next();
+});
+
+
+app.get('/home', function (req, res) {
+
+  if (req.user) {
+    res.sendFile(__dirname + '/public/views/index.html');
+  } else {
+    res.redirect("/login");
+
+}
+
+});
+
+global.fetch=require("node-fetch");
+const bodyp = require("body-parser");
+app.use(bodyp.json());
+app.use(bodyp.urlencoded({ extended: true }));
+const cognito = require("amazon-cognito-identity-js");
+const poolData = {
+  UserPoolId: "us-east-1_QU7S1Wfkx",
+  ClientId: "jfnrtab2a6tkqkupr0bvl47rb"
+};
+const userPool = new cognito.CognitoUserPool(poolData);
+
+humedad.init(function () {})
+temp.init(function () {})
+luz.init(function () {})
+
+
+app.get('/signup', function (req, res) {
+  res.sendFile(__dirname + '/public/views/signup.html');
+});
+app.get('/login', function (req, res) {
+  res.sendFile(__dirname + '/public/views/login.html');
+});
+
+app.post('/signup', function (req, res) {
+  const email = req.body.email;
+  const password = req.body.password;
+  const emailData = {
+    Name: "email",
+    Value: email
+  };
+  const emailAttr = new cognito.CognitoUserAttribute(emailData);
+  userPool.signUp(email, password, [emailAttr], null, (err, data) => {
+    if (err) {
+      console.log(err);
+      return res.redirect("/signup");
+    } 
+    const user=true;
+    const authToken = generateAuthToken();
+
+    // Store authentication token
+    authTokens[authToken] = user;
+
+    // Setting the auth token in cookies
+    res.cookie('AuthToken', authToken);
+     return res.redirect("/home");
+   
+  });
+});
+
+app.post('/login', function (req, res) {
+  const loginDetails={
+    Username:req.body.email,
+    Password:req.body.password
+  };
+  const autenthicationDetails=new cognito.AuthenticationDetails(loginDetails);
+  const userDetails={
+    Username:req.body.email,
+    Pool: userPool
+  };
+  const cognitoUser= new cognito.CognitoUser(userDetails);
+  cognitoUser.authenticateUser(autenthicationDetails,{
+    onSuccess:data=>{
+      const user=true;
+      const authToken = generateAuthToken();
+
+        // Store authentication token
+        authTokens[authToken] = user;
+
+        // Setting the auth token in cookies
+        res.cookie('AuthToken', authToken);
+      return res.redirect("/home");
+    },
+    onFailure:err=>{
+      console.log(err);
+      return res.redirect("/login");
+    }
+  });
 });
 
 app.get('/a', function (req, res) {
@@ -38,12 +135,11 @@ app.get('/a', function (req, res) {
   };
 
   processData(function (err, queryresults) {
-    console.log("teme"+queryresults);
     res.json(queryresults);
   });
 
 });
- app.get('/b', function (req, res) {
+app.get('/b', function (req, res) {
   var imageurls = [];
 
   var processData2 = function (callback) {
@@ -56,20 +152,36 @@ app.get('/a', function (req, res) {
   };
 
   processData2(function (err, queryresults) {
-    //console.log(queryresults);
     res.json(queryresults);
   });
 
-}); 
-
-app.get('/calendario', function (req, res) {
-  //res.end('hola mundo');
-  res.sendFile(__dirname + '/public/views/calendario.html');
 });
+app.get('/c', function (req, res) {
+  var imageurls = [];
 
+  var processData3 = function (callback) {
+    luz.getH(function (err, data) {
+      // imageurls = data;
+      imageurls = data;
+      callback(undefined, imageurls);
+
+    });
+  };
+
+  processData3(function (err, queryresults) {
+    res.json(queryresults);
+  });
+
+});
 app.get('/bitacoras', function (req, res) {
-  //res.end('hola mundo');
-  res.sendFile(__dirname + '/public/views/bitacoras.html');
+  if (req.user) {
+    res.sendFile(__dirname + '/public/views/bitacoras.html');
+  } else {
+    res.redirect("/login");
+
+}
+
 });
 app.listen(80);
+
 
