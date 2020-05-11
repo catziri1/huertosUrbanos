@@ -3,7 +3,7 @@ let app = express();
 app.set('view engine', 'ejs');
 path = require('path');
 var async = require('async');
- app.use('/public', express.static(__dirname + '/public'));
+app.use('/public', express.static(__dirname + '/public'));
 var Observable = require('rxjs');
 var dynamo = require('./dynamo.js');
 var temp = new dynamo('Temperatura');
@@ -40,11 +40,11 @@ app.get('/home', function (req, res) {
   } else {
     res.redirect("/login");
 
-}
+  }
 
 });
 
-global.fetch=require("node-fetch");
+global.fetch = require("node-fetch");
 const bodyp = require("body-parser");
 app.use(bodyp.json());
 app.use(bodyp.urlencoded({ extended: true }));
@@ -55,17 +55,33 @@ const poolData = {
 };
 const userPool = new cognito.CognitoUserPool(poolData);
 
-humedad.init(function () {})
-temp.init(function () {})
-luz.init(function () {})
+humedad.init(function () { })
+temp.init(function () { })
+luz.init(function () { })
 
 
 app.get('/signup', function (req, res) {
   res.sendFile(__dirname + '/public/views/signup.html');
 });
+
+app.get('/logout', function (req, res) {
+  res.clearCookie("AuthToken");
+  res.redirect('/login');
+});
+
 app.get('/login', function (req, res) {
   res.sendFile(__dirname + '/public/views/login.html');
 });
+
+app.post('/registrar', function (req, res) {
+  if (req.user) {
+    res.redirect('/home');
+  } else {
+    res.redirect("/login");
+
+  }
+});
+
 
 app.post('/signup', function (req, res) {
   const email = req.body.email;
@@ -79,8 +95,8 @@ app.post('/signup', function (req, res) {
     if (err) {
       console.log(err);
       return res.redirect("/signup");
-    } 
-    const user=true;
+    }
+    const user = true;
     const authToken = generateAuthToken();
 
     // Store authentication token
@@ -88,35 +104,35 @@ app.post('/signup', function (req, res) {
 
     // Setting the auth token in cookies
     res.cookie('AuthToken', authToken);
-     return res.redirect("/home");
-   
+    return res.redirect("/registro");
+
   });
 });
 
 app.post('/login', function (req, res) {
-  const loginDetails={
-    Username:req.body.email,
-    Password:req.body.password
+  const loginDetails = {
+    Username: req.body.email,
+    Password: req.body.password
   };
-  const autenthicationDetails=new cognito.AuthenticationDetails(loginDetails);
-  const userDetails={
-    Username:req.body.email,
+  const autenthicationDetails = new cognito.AuthenticationDetails(loginDetails);
+  const userDetails = {
+    Username: req.body.email,
     Pool: userPool
   };
-  const cognitoUser= new cognito.CognitoUser(userDetails);
-  cognitoUser.authenticateUser(autenthicationDetails,{
-    onSuccess:data=>{
-      const user=true;
+  const cognitoUser = new cognito.CognitoUser(userDetails);
+  cognitoUser.authenticateUser(autenthicationDetails, {
+    onSuccess: data => {
+      const user = true;
       const authToken = generateAuthToken();
 
-        // Store authentication token
-        authTokens[authToken] = user;
+      // Store authentication token
+      authTokens[authToken] = user;
 
-        // Setting the auth token in cookies
-        res.cookie('AuthToken', authToken);
+      // Setting the auth token in cookies
+      res.cookie('AuthToken', authToken);
       return res.redirect("/home");
     },
-    onFailure:err=>{
+    onFailure: err => {
       console.log(err);
       return res.redirect("/login");
     }
@@ -173,13 +189,13 @@ app.get('/c', function (req, res) {
   });
 
 });
-app.get('/bitacoras', function (req, res) {
+app.get('/registro', function (req, res) {
   if (req.user) {
-    res.sendFile(__dirname + '/public/views/bitacoras.html');
+    res.sendFile(__dirname + '/public/views/registro.html');
   } else {
     res.redirect("/login");
 
-}
+  }
 
 });
 app.listen(80);
