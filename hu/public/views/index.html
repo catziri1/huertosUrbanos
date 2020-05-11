@@ -20,23 +20,34 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
   <script>
+   function h() {
+      console.log("hi");
+       $.ajax("/huertos",{
+        success: function (data) {
+          console.log("hi2");
+          var selec = document.getElementById("huertos");
+          console.log(data);
+          var huertos = ["Huerto 1"];
+          data.forEach(function (x) {
+            var myOption = document.createElement("option");
+            myOption.text = x;
+            myOption.value = x;
+            myOption.href = "/" + x;
+            selec.appendChild(myOption);
+          });
+        }
+        , error: function( error )
+      {
 
-    function huertos() {
-      var selec = document.getElementById("huertos");
-      var huertos = ["Huerto 1"];
-       huertos.forEach(function (x) {
-        var   myOption = document.createElement("option");
-        myOption.text = x;
-        myOption.value = x;
-        myOption.href = "/"+x;
-        selec.appendChild(myOption);
+         console.log(error);
+
+      }
       });
     }
-
-    function huerto(){
+    function huerto() {
       var x = document.getElementById("huertos").value;
     }
-
+h();
     function gog() {
       var jsonData = $.ajax({
         url: "/a",
@@ -80,11 +91,11 @@
             , colors: ['ffaa00']
           };
 
-
           var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
           chart.draw(data, options);
 
         }
+   
       });
     }
 
@@ -194,22 +205,22 @@
 
     }
 
-    google.charts.load('current', { callback: function () { gogHumedad(); setInterval(function () { gogHumedad();  }, 3000); }, packages: ['corechart'] });
-    google.charts.load('current', { callback: function () { gog(); setInterval(function () { gog();  }, 3000); }, packages: ['corechart'] });
+    google.charts.load('current', { callback: function () { gogHumedad(); setInterval(function () { gogHumedad(); }, 3000); }, packages: ['corechart'] });
+    google.charts.load('current', { callback: function () { gog(); setInterval(function () { gog(); }, 3000); }, packages: ['corechart'] });
     google.charts.load('current', {
       callback: function () {
-        gogLuminosidad(); setInterval(function () { gogLuminosidad();  }, 3000);
+        gogLuminosidad(); setInterval(function () { gogLuminosidad(); }, 3000);
 
       }, packages: ['corechart']
     });
   </script>
 </head>
 
-<body onload="huertos()">
+<body >
   <nav class="navbar navbar-expand-lg navbar-dark  fixed-top ">
     <a class="navbar-brand" href="#">
       <img src="../public/images/icon.png" width="20" height="20" class="d-inline-block align-top" alt="">
-     
+
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

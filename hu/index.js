@@ -9,12 +9,11 @@ var dynamo = require('./dynamo.js');
 var temp = new dynamo('Temperatura');
 var luz = new dynamo('Luz');
 var humedad = new dynamo('Humedad');
-
-
+var rel = new dynamo('Dispositivo-Usuario');
+var emailConst="";
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 const crypto = require('crypto');
-
 
 const generateAuthToken = () => {
   return crypto.randomBytes(30).toString('hex');
@@ -55,10 +54,10 @@ const poolData = {
 };
 const userPool = new cognito.CognitoUserPool(poolData);
 
-humedad.init(function () { })
-temp.init(function () { })
-luz.init(function () { })
-
+humedad.init(function () { });
+temp.init(function () { });
+luz.init(function () { });
+rel.init(function () { });
 
 app.get('/signup', function (req, res) {
   res.sendFile(__dirname + '/public/views/signup.html');
@@ -75,12 +74,16 @@ app.get('/login', function (req, res) {
 
 app.post('/registrar', function (req, res) {
   if (req.user) {
+    const name = req.body.name;
+    const id = req.body.id;
+    rel.post(name,id,emailConst);
+   
     res.redirect('/home');
   } else {
     res.redirect("/login");
-
   }
 });
+
 
 
 app.post('/signup', function (req, res) {
@@ -122,6 +125,7 @@ app.post('/login', function (req, res) {
   const cognitoUser = new cognito.CognitoUser(userDetails);
   cognitoUser.authenticateUser(autenthicationDetails, {
     onSuccess: data => {
+      emailConst=req.body.email;
       const user = true;
       const authToken = generateAuthToken();
 
@@ -141,19 +145,29 @@ app.post('/login', function (req, res) {
 
 app.get('/a', function (req, res) {
   var imageurls = [];
-
   var processData = function (callback) {
     temp.get(function (err, data) {
       imageurls = data;
       callback(undefined, imageurls);
-
     });
   };
-
   processData(function (err, queryresults) {
     res.json(queryresults);
   });
+});
 
+app.get('/huertos', function (req, res) {
+  
+  var imageurls = [];
+  var processData = function (callback) {
+   rel.getHuertos(function (err, data) {
+      imageurls = data;
+      callback(undefined, imageurls);
+    });
+  };
+  processData(function (err, queryresults) {
+    res.json(queryresults);
+  });
 });
 app.get('/b', function (req, res) {
   var imageurls = [];

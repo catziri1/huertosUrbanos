@@ -56,12 +56,12 @@ dynamo.prototype.get = function (callback) {
           return (a[0] < b[0]) ? 1 : -1;
         }
       }
-      fi=answer.slice(0, 5);
-      fi[0][0]=fi[0][0].substring(8,10)+":"+fi[0][0].substring(10,12)+":"+fi[0][0].substring(12,14);
-      fi[1][0]=fi[1][0].substring(8,10)+":"+fi[1][0].substring(10,12)+":"+fi[1][0].substring(12,14);
-      fi[2][0]=fi[2][0].substring(8,10)+":"+fi[2][0].substring(10,12)+":"+fi[2][0].substring(12,14);
-      fi[3][0]=fi[3][0].substring(8,10)+":"+fi[3][0].substring(10,12)+":"+fi[3][0].substring(12,14);
-      fi[4][0]=fi[4][0].substring(8,10)+":"+fi[4][0].substring(10,12)+":"+fi[4][0].substring(12,14);
+      fi = answer.slice(0, 5);
+      fi[0][0] = fi[0][0].substring(8, 10) + ":" + fi[0][0].substring(10, 12) + ":" + fi[0][0].substring(12, 14);
+      fi[1][0] = fi[1][0].substring(8, 10) + ":" + fi[1][0].substring(10, 12) + ":" + fi[1][0].substring(12, 14);
+      fi[2][0] = fi[2][0].substring(8, 10) + ":" + fi[2][0].substring(10, 12) + ":" + fi[2][0].substring(12, 14);
+      fi[3][0] = fi[3][0].substring(8, 10) + ":" + fi[3][0].substring(10, 12) + ":" + fi[3][0].substring(12, 14);
+      fi[4][0] = fi[4][0].substring(8, 10) + ":" + fi[4][0].substring(10, 12) + ":" + fi[4][0].substring(12, 14);
     }
     callback(err, fi);
 
@@ -99,15 +99,15 @@ dynamo.prototype.getL = function (callback) {
           return (a[0] < b[0]) ? 1 : -1;
         }
       }
-     // console.log(answer);
+      // console.log(answer);
       // js.sort((a, b) => (a.timeTemp > b.timeTemp) ? -1 : 1)
       //console.log("jsnew"+js);
-      fi=answer.slice(0, 5);
-      fi[0][0]=fi[0][0].substring(8,10)+":"+fi[0][0].substring(10,12)+":"+fi[0][0].substring(12,14);
-      fi[1][0]=fi[1][0].substring(8,10)+":"+fi[1][0].substring(10,12)+":"+fi[1][0].substring(12,14);
-      fi[2][0]=fi[2][0].substring(8,10)+":"+fi[2][0].substring(10,12)+":"+fi[2][0].substring(12,14);
-      fi[3][0]=fi[3][0].substring(8,10)+":"+fi[3][0].substring(10,12)+":"+fi[3][0].substring(12,14);
-      fi[4][0]=fi[4][0].substring(8,10)+":"+fi[4][0].substring(10,12)+":"+fi[4][0].substring(12,14);
+      fi = answer.slice(0, 5);
+      fi[0][0] = fi[0][0].substring(8, 10) + ":" + fi[0][0].substring(10, 12) + ":" + fi[0][0].substring(12, 14);
+      fi[1][0] = fi[1][0].substring(8, 10) + ":" + fi[1][0].substring(10, 12) + ":" + fi[1][0].substring(12, 14);
+      fi[2][0] = fi[2][0].substring(8, 10) + ":" + fi[2][0].substring(10, 12) + ":" + fi[2][0].substring(12, 14);
+      fi[3][0] = fi[3][0].substring(8, 10) + ":" + fi[3][0].substring(10, 12) + ":" + fi[3][0].substring(12, 14);
+      fi[4][0] = fi[4][0].substring(8, 10) + ":" + fi[4][0].substring(10, 12) + ":" + fi[4][0].substring(12, 14);
     }
     callback(err, fi);
 
@@ -145,19 +145,106 @@ dynamo.prototype.getH = function (callback) {
           return (a[0] < b[0]) ? 1 : -1;
         }
       }
-     // console.log(answer);
+      // console.log(answer);
       // js.sort((a, b) => (a.timeTemp > b.timeTemp) ? -1 : 1)
       //console.log("jsnew"+js);
-      fi=answer.slice(0, 5);
-      fi[0][0]=fi[0][0].substring(8,10)+":"+fi[0][0].substring(10,12)+":"+fi[0][0].substring(12,14);
-      fi[1][0]=fi[1][0].substring(8,10)+":"+fi[1][0].substring(10,12)+":"+fi[1][0].substring(12,14);
-      fi[2][0]=fi[2][0].substring(8,10)+":"+fi[2][0].substring(10,12)+":"+fi[2][0].substring(12,14);
-      fi[3][0]=fi[3][0].substring(8,10)+":"+fi[3][0].substring(10,12)+":"+fi[3][0].substring(12,14);
-      fi[4][0]=fi[4][0].substring(8,10)+":"+fi[4][0].substring(10,12)+":"+fi[4][0].substring(12,14);
+      fi = answer.slice(0, 5);
+      fi[0][0] = fi[0][0].substring(8, 10) + ":" + fi[0][0].substring(10, 12) + ":" + fi[0][0].substring(12, 14);
+      fi[1][0] = fi[1][0].substring(8, 10) + ":" + fi[1][0].substring(10, 12) + ":" + fi[1][0].substring(12, 14);
+      fi[2][0] = fi[2][0].substring(8, 10) + ":" + fi[2][0].substring(10, 12) + ":" + fi[2][0].substring(12, 14);
+      fi[3][0] = fi[3][0].substring(8, 10) + ":" + fi[3][0].substring(10, 12) + ":" + fi[3][0].substring(12, 14);
+      fi[4][0] = fi[4][0].substring(8, 10) + ":" + fi[4][0].substring(10, 12) + ":" + fi[4][0].substring(12, 14);
     }
     callback(err, fi);
 
   });
 };
+
+
+
+dynamo.prototype.post = function (name, id, emailConst) {
+  namel = []
+  idl = []
+  namel.push(name);
+  idl.push(id);
+  var params = {
+    TableName: "Dispositivo-Usuario",
+    FilterExpression: "#email=:VAL",
+    ExpressionAttributeNames: {
+      "#email": "email"
+    },
+    ExpressionAttributeValues: {
+      ":VAL": {
+        S: emailConst
+      }
+    }
+  };
+
+  db.scan(params, function onScan(err, data) {
+    if (err) {
+      console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
+    } else {
+      data.Items.forEach(function (a) {
+        a.nameHuerto.L.forEach(function (b) {
+          namel.push(b['S']);
+        });
+        a.userID.L.forEach(function (b) {
+          idl.push(b['S']);
+        });
+
+      });
+      var docClient = new AWS.DynamoDB.DocumentClient();
+      docClient.put(
+        {
+          "TableName": "Dispositivo-Usuario",
+          "Item": {
+            "email": emailConst,
+            "nameHuerto": namel,
+            "userID": idl
+          }
+        }, function (err, data) {
+          if (err) {
+            console.log(err); // an error occurred
+          } else {
+            // console.log(data); // successful response
+          }
+        });
+
+    }
+  });
+};
+
+dynamo.prototype.getHuertos = function (callback) {
+  var emailConst="catziri@gmail.com";
+  var params = {
+    TableName: "Dispositivo-Usuario",
+    FilterExpression: "#email=:VAL",
+    ExpressionAttributeNames: {
+      "#email": "email"
+    },
+    ExpressionAttributeValues: {
+      ":VAL": {
+        S:  emailConst
+      }
+    }
+  };
+  db.scan(params, function onScan(err, data) {
+  
+    if (err) {
+      console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
+    } else {
+      namel = [];
+      console.log(data.Items);
+      data.Items.forEach(function (a) {
+        a.nameHuerto.L.forEach(function (b) {
+          namel.push(b['S']);
+        });
+      });
+    }
+    callback(err, namel);
+  });
+}
+
+
 
 module.exports = dynamo;
